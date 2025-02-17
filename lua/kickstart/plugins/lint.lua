@@ -1,5 +1,4 @@
 return {
-
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -13,7 +12,6 @@ return {
         javascriptreact = { 'eslint_d' },
         json = { 'jsonlint' },
         yaml = { 'yamllint' },
-        sh = { 'shellcheck' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,

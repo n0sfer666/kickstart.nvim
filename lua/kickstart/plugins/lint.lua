@@ -12,6 +12,8 @@ return {
         javascriptreact = { 'eslint_d' },
         json = { 'jsonlint' },
         yaml = { 'yamllint' },
+        css = { 'stylelint' },
+        scss = { 'stylelint' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,

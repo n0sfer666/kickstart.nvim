@@ -111,7 +111,7 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 vim.opt.spell = true
-vim.opt.spelllang = { 'en_US', 'ru_RU' }
+vim.opt.spelllang = { 'en' }
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.

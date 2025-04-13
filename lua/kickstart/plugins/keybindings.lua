@@ -25,12 +25,4 @@ return {
   vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv"),
   -- move selected code upper
   vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv"),
-
-  -- Spellchecing
-  --
-  -- Клавиши для быстрого переключения языков проверки орфографии
-  vim.keymap.set('n', '<leader>se', '<cmd>set spelllang=en_US<CR>', { desc = 'Set spellcheck to English' }),
-  vim.keymap.set('n', '<leader>sr', '<cmd>set spelllang=ru_RU<CR>', { desc = 'Set spellcheck to Russian' }),
-  vim.keymap.set('n', '<leader>sb', '<cmd>set spelllang=en_US,ru_RU<CR>', { desc = 'Set spellcheck to Both' }),
-  vim.keymap.set('n', '<leader>ss', ':set spell!<CR>', { noremap = true, silent = true, desc = 'Toggle Spellcheck' }),
 }

@@ -113,6 +113,13 @@ vim.opt.showmode = false
 vim.opt.spell = true
 vim.opt.spelllang = { 'en' }
 
+-- Включить перенос строк
+vim.opt.wrap = true
+-- Перенос по словам, а не посимвольно
+vim.opt.linebreak = true
+-- Опционально: символ, обозначающий перенос (если нужен)
+vim.opt.showbreak = '↪ '
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.

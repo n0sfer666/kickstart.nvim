@@ -8,6 +8,9 @@ return {
   vim.keymap.set('n', '<CR>', 'm`o<Esc>``'),
   vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``'),
 
+  -- markdownPreview
+  vim.keymap.set('n', '<leader>md', ':MarkdownPreviewToggle<CR>', { noremap = true, silent = true, desc = 'Markdown Preview' }),
+
   -- Buffers
   --
   -- Force Close

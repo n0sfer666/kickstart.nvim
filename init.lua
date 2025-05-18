@@ -110,8 +110,20 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+-- spellcheck and transliting
 vim.opt.spell = true
-vim.opt.spelllang = { 'en' }
+vim.opt.spelllang = { 'ru', 'en' }
+vim.opt.spellfile = vim.fn.expand './spell/all.utf-8.add'
+vim.opt.spelloptions = 'camel'
+vim.opt.langmap =
+  -- Верхний регистр (ЙЦУКЕН → QWERTY)
+  'ЙQ,ЦW,УE,КR,ЕT,НY,ГU,ШI,ЩO,ЗP,Х{,Ъ},Ё~,'
+  -- Верхний регистр (ФЫВАП → ASDFG) + `Ж` → `:`, `Э` → `"`
+  .. 'ФA,ЫS,ВD,АF,ПG,РH,ОJ,ЛK,ДL,Ж\\:,Э\\",'
+  -- Нижний регистр (фывап → asdfg) + `ж` → `;`, `э` → `'`
+  .. "фa,ыs,вd,аf,пg,рh,оj,лk,дl,ж\\;,э\\',"
+  -- Нижний регистр (ячсми → zxcvb)
+  .. 'яz,чx,сc,мv,иb,тn,ьm,б\\,,ю.'
 
 -- Включить перенос строк
 vim.opt.wrap = true
@@ -774,6 +786,8 @@ require('lazy').setup {
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
 }
+
+require 'kickstart.plugins.dump_keys'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

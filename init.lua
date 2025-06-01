@@ -113,7 +113,7 @@ vim.opt.showmode = false
 -- spellcheck and transliting
 vim.opt.spell = true
 vim.opt.spelllang = { 'ru', 'en' }
-vim.opt.spellfile = vim.fn.expand './spell/all.utf-8.add'
+vim.opt.spellfile = vim.fn.expand '~/.config/nvim/spell/all.utf-8.add'
 vim.opt.spelloptions = 'camel'
 vim.opt.langmap =
   -- Верхний регистр (ЙЦУКЕН → QWERTY)
@@ -788,6 +788,6 @@ require('lazy').setup {
 }
 
 require 'kickstart.plugins.dump_keys'
-
+require('kickstart.plugins.replace_all').setup()
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

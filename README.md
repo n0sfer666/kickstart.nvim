@@ -13,8 +13,11 @@ Config based on kickstart neovim
 ### git
   - LazyGit
 ### rename
-  - nvim-spectre
-  - mini.surround (with custom JSX support)
+  - custom in buffer (<leader>rr - without confirm, <leader>rR - with confirm)
+  - custom on opened buffers (<leader>rB! - without confirm, <leader>rBC - with confirm)
+  - custom on files (<leader>rP! - without confirm, <leader>rPC - with confirm)
+
+  - mini.surround (<leader>r -> [a]dd, [d]elete, [c]hange -> [i]nner, [o]uter -> [w]ord)
 ### spellcheck
 > Languages: ru, en  
 > CustomDictionary: all-in-one

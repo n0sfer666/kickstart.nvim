@@ -24,4 +24,8 @@ return {
   vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv"),
   -- move selected code upper
   vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv"),
+  -- Показ типа переменной по <K>
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show variable info (LSP)' }),
+  -- Переход к определению по <gd>
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' }),
 }

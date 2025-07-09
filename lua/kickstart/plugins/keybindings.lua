@@ -14,9 +14,9 @@ return {
   -- Buffers
   --
   -- Force Close
-  vim.keymap.set('n', '<leader>bc', ':bd!<CR>', { noremap = true, silent = true, desc = 'Force Close Buffer' }),
+  vim.keymap.set('n', '<leader>ba', ':%bd | e#<CR>', { noremap = true, silent = true, desc = 'Delete [A]ll Buffer' }),
   -- Force Delete from Memory
-  vim.keymap.set('n', '<leader>bd', ':bw!<CR>', { noremap = true, silent = true, desc = 'Delete Buffer' }),
+  vim.keymap.set('n', '<leader>bd', ':bw!<CR>', { noremap = true, silent = true, desc = '[D]elete Buffer' }),
 
   -- Refactoring
   --

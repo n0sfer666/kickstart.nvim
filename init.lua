@@ -60,19 +60,6 @@ vim.opt.spell = true
 vim.opt.spelllang = { 'ru', 'en' }
 vim.opt.spellfile = vim.fn.expand '~/.config/nvim/spell/all.utf-8.add'
 vim.opt.spelloptions = 'camel'
-vim.opt.langmap =
-  -- Верхний регистр (ЙЦУКЕН → QWERTY)
-  'ЙQ,ЦW,УE,КR,ЕT,НY,ГU,ШI,ЩO,ЗP,Х{,Ъ},Ё~,'
-  -- Верхний регистр (ФЫВАП → ASDFG) + `Ж` → `:`, `Э` → `"`
-  .. 'ФA,ЫS,ВD,АF,ПG,РH,ОJ,ЛK,ДL,Ж\\:,Э\\",'
-  -- Верхний регистр (ЯЧСМИ → ZXCVB)
-  .. 'ЯZ,ЧX,СC,МV,ИB,ТN,ЬM,Б\\.,Ю.'
-  -- Нижний регистр (йцукен → qwerty)
-  .. 'йq,цw,уe,кr,еt,нy,гu,шi,щo,зp,х[,ъ]'
-  -- Нижний регистр (фывап → asdfg) + `ж` → `;`, `э` → `'`
-  .. "фa,ыs,вd,аf,пg,рh,оj,лk,дl,ж\\;,э\\'"
-  -- Нижний регистр (ячсми → zxcvb)
-  .. 'яz,чx,сc,мv,иb,тn,ьm,б\\,,ю.'
 
 -- Включить перенос строк
 vim.opt.wrap = true
@@ -80,11 +67,21 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 -- Опционально: символ, обозначающий перенос (если нужен)
 vim.opt.showbreak = '↪ '
-
+-- Закрываем буфер [No Name] и запускаем Telescope
+vim.api.nvim_create_autocmd('VimEnter', {
+  pattern = '*',
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd 'silent! enew'
+      require('telescope.builtin').find_files()
+    end
+  end,
+})
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
+
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)

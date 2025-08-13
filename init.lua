@@ -524,13 +524,14 @@ require('lazy').setup {
   require 'kickstart.plugins.keybindings',
   require 'kickstart.plugins.treesitter',
   require 'kickstart.plugins.freemarker',
+  require 'kickstart.plugins.replace',
 
   { import = 'custom.plugins' },
 }
 
 require 'kickstart.plugins.dump_keys'
-local smartReplace = require 'kickstart.plugins.replace'
-vim.keymap.set('n', '<leader>rr', smartReplace, { desc = 'Smart replacing with $$' })
-
+vim.keymap.set('n', '<leader>rr', '<cmd>lua require("spectre").toggle()<CR>', {
+  desc = 'Search & Replace',
+})
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

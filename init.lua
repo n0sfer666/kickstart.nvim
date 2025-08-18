@@ -525,6 +525,7 @@ require('lazy').setup {
   require 'kickstart.plugins.treesitter',
   require 'kickstart.plugins.freemarker',
   require 'kickstart.plugins.replace',
+  require 'kickstart.plugins.auto_complete',
 
   { import = 'custom.plugins' },
 }

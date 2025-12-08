@@ -11,12 +11,10 @@ return {
     'saadparwaiz1/cmp_luasnip', -- Поддержка luasnip
     -- Фрагменты кода
     'L3MON4D3/LuaSnip',
-    -- 'rafamadriz/friendly-snippets', -- Коллекция готовых фрагментов
     -- Дополнительные источники
     'hrsh7th/cmp-nvim-lua', -- Для Lua конфигов
     'hrsh7th/cmp-calc', -- Математические вычисления
     'f3fora/cmp-spell', -- Проверка орфографии
-    'kdheepak/cmp-latex-symbols', -- Символы LaTeX
     -- кастомные сниппеты
     'mattn/emmet-vim',
   },
@@ -25,9 +23,6 @@ return {
     local luasnip = require 'luasnip'
 
     -- Загрузка дружественных фрагментов
-    require('luasnip.loaders.from_vscode').lazy_load()
-    require('luasnip.loaders.from_lua').load { paths = '~/.config/nvim/snippets' }
-
     -- НАСТРОЙКА EMMET-VIM
     vim.g.emmet_leader_key = '<C-y>' -- Клавиша активации Emmet
 
@@ -40,6 +35,8 @@ return {
       ),
       luasnip.parser.parse_snippet('di', '<div>${0}</div>'),
       luasnip.parser.parse_snippet('p', '<p>${0}</p>'),
+      luasnip.parser.parse_snippet('cl', 'className={${0}}'),
+      luasnip.parser.parse_snippet('cn', "import cn from 'classnames'"),
       luasnip.parser.parse_snippet('state', 'const [${1:state}, set${1^:State}] = useState(${2:initialValue});'),
       luasnip.parser.parse_snippet('useEffect', 'useEffect(() => {\n  ${0}\n}, [${1:dependencies}]);'),
     })
@@ -85,9 +82,7 @@ return {
         { name = 'luasnip' }, -- Фрагменты
         { name = 'buffer' }, -- Текущий буфер
         { name = 'path' }, -- Пути файлов
-        { name = 'calc' }, -- Математика
         { name = 'spell' }, -- Орфография
-        { name = 'latex_symbols' }, -- Символы LaTeX
       },
       formatting = {
         format = function(entry, vim_item)
@@ -145,11 +140,21 @@ return {
         { name = 'cmdline' },
       },
     })
-    -- Установка ключевых маппингов для nvim-lspconfig
-    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-    -- Пример настройки lspconfig (добавьте в ваш lspconfig.lua)
-    -- require('lspconfig').pyright.setup {
-    --   capabilities = capabilities,
-    -- }
+    local lspconfig = require 'lspconfig'
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+    lspconfig.cssls.setup {
+      capabilities = capabilities,
+      filetypes = { 'css', 'scss', 'less' },
+      settings = {
+        css = { validate = true },
+        scss = { validate = true },
+        less = { validate = true },
+      },
+    }
+    lspconfig.emmet_ls.setup {
+      capabilities = capabilities,
+      filetypes = { 'html', 'css', 'scss', 'javascriptreact', 'typescriptreact' },
+    }
   end,
 }

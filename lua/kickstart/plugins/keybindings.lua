@@ -28,4 +28,6 @@ return {
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show variable info (LSP)' }),
   -- Переход к определению по <gd>
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' }),
+  -- Spectre
+  vim.keymap.set('n', '<leader>rr', '<cmd>lua require("spectre").toggle()<CR>', { desc = 'Toggle Spectre' }),
 }

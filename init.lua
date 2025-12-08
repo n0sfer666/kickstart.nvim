@@ -453,7 +453,7 @@ require('lazy').setup {
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp[server_name].setup(server)
           end,
         },
       }
@@ -488,7 +488,7 @@ require('lazy').setup {
           lsp_format_opt = 'fallback'
         end
         return {
-          timeout_ms = 500,
+          timeout_ms = 5000,
           lsp_format = lsp_format_opt,
         }
       end,
@@ -534,5 +534,27 @@ require 'kickstart.plugins.dump_keys'
 vim.keymap.set('n', '<leader>rr', '<cmd>lua require("spectre").toggle()<CR>', {
   desc = 'Search & Replace',
 })
+local highlight = {
+  'RainbowRed',
+  'RainbowYellow',
+  'RainbowBlue',
+  'RainbowOrange',
+  'RainbowGreen',
+  'RainbowViolet',
+  'RainbowCyan',
+}
+
+local hooks = require 'ibl.hooks'
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+  vim.api.nvim_set_hl(0, 'RainbowRed', { fg = '#E06C75' })
+  vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#E5C07B' })
+  vim.api.nvim_set_hl(0, 'RainbowBlue', { fg = '#61AFEF' })
+  vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#D19A66' })
+  vim.api.nvim_set_hl(0, 'RainbowGreen', { fg = '#98C379' })
+  vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#C678DD' })
+  vim.api.nvim_set_hl(0, 'RainbowCyan', { fg = '#56B6C2' })
+end)
+
+require('ibl').setup { indent = { highlight = highlight } }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -92,6 +92,17 @@ vim.opt.breakindent = true
 -- Save undo history
 vim.opt.undofile = true
 
+vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
+  callback = function()
+    local undo_dir = vim.fn.stdpath('state') .. '/undo/'
+    local file_path = vim.fn.expand('%:p')
+    local undo_file = undo_dir .. file_path:gsub('/', '%%')
+    if #undo_file > 255 then
+      vim.opt_local.undofile = false
+    end
+  end,
+})
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true

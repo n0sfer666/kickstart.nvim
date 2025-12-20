@@ -15,8 +15,6 @@ return {
     'hrsh7th/cmp-nvim-lua', -- Для Lua конфигов
     'hrsh7th/cmp-calc', -- Математические вычисления
     'f3fora/cmp-spell', -- Проверка орфографии
-    -- кастомные сниппеты
-    'mattn/emmet-vim',
   },
   config = function()
     local cmp = require 'cmp'
@@ -81,7 +79,6 @@ return {
         { name = 'nvim_lsp' }, -- LSP источник
         { name = 'luasnip' }, -- Фрагменты
         { name = 'buffer' }, -- Текущий буфер
-        { name = 'path' }, -- Пути файлов
         { name = 'spell' }, -- Орфография
       },
       formatting = {
@@ -119,7 +116,7 @@ return {
         end,
       },
       experimental = {
-        ghost_text = true, -- Показывать призрачный текст
+        ghost_text = false, -- Показывать призрачный текст
       },
       window = {
         completion = cmp.config.window.bordered(),
@@ -136,7 +133,6 @@ return {
     cmp.setup.cmdline(':', {
       mapping = cmp.mapping.preset.cmdline(),
       sources = cmp.config.sources {
-        { name = 'path' },
         { name = 'cmdline' },
       },
     })

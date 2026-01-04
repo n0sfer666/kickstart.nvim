@@ -1,48 +1,38 @@
--- plugins/autocomplete.lua
 return {
-  -- Основной плагин автодополнения
   'hrsh7th/nvim-cmp',
   dependencies = {
-    -- Источники данных
-    'hrsh7th/cmp-nvim-lsp', -- LSP источник
-    'hrsh7th/cmp-buffer', -- Буферный источник
-    'hrsh7th/cmp-path', -- Источник путей
-    'hrsh7th/cmp-cmdline', -- Источник командной строки
-    'saadparwaiz1/cmp_luasnip', -- Поддержка luasnip
-    -- Фрагменты кода
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
     'L3MON4D3/LuaSnip',
-    -- Дополнительные источники
-    'hrsh7th/cmp-nvim-lua', -- Для Lua конфигов
-    'hrsh7th/cmp-calc', -- Математические вычисления
-    'f3fora/cmp-spell', -- Проверка орфографии
+    'saadparwaiz1/cmp_luasnip',
   },
   config = function()
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
 
-    -- Загрузка дружественных фрагментов
-    -- НАСТРОЙКА EMMET-VIM
-    vim.g.emmet_leader_key = '<C-y>' -- Клавиша активации Emmet
+    luasnip.add_snippets('typescriptreact', {
+      luasnip.snippet('cl', {
+        luasnip.text_node 'className={',
+        luasnip.insert_node(1),
+        luasnip.text_node '}',
+      }),
+      luasnip.snippet('cn', {
+        luasnip.text_node "import cn from 'classnames'",
+      }),
+    })
 
-    -- КАСТОМНЫЕ СНИППЕТЫ ДЛЯ TSX
-    require('luasnip').add_snippets('typescriptreact', {
-      luasnip.parser.parse_snippet('log', 'console.log(${0})'),
-      luasnip.parser.parse_snippet(
-        'rfc',
-        "import React, { FC } from 'react';\n\ntype Props = {\n\n}\n\nexport const ${1:ComponentName}: FC<Props> = () => {\nreturn (\n{/* delete and do the thing */}\n)}"
-      ),
-      luasnip.parser.parse_snippet('di', '<div>${0}</div>'),
-      luasnip.parser.parse_snippet('p', '<p>${0}</p>'),
-      luasnip.parser.parse_snippet('cl', 'className={${0}}'),
-      luasnip.parser.parse_snippet('cn', "import cn from 'classnames'"),
-      luasnip.parser.parse_snippet('state', 'const [${1:state}, set${1^:State}] = useState(${2:initialValue});'),
-      luasnip.parser.parse_snippet('useEffect', 'useEffect(() => {\n  ${0}\n}, [${1:dependencies}]);'),
+    luasnip.add_snippets('javascriptreact', {
+      luasnip.snippet('cl', {
+        luasnip.text_node 'className={',
+        luasnip.insert_node(1),
+        luasnip.text_node '}',
+      }),
+      luasnip.snippet('cn', {
+        luasnip.text_node "import cn from 'classnames'",
+      }),
     })
-    -- КАСТОМНЫЕ СНИППЕТЫ ДЛЯ TS
-    require('luasnip').add_snippets('typescript', {
-      luasnip.parser.parse_snippet('log', 'console.log(${0})'),
-    })
-    -- НАСТРОЙКА CMP
+
     cmp.setup {
       snippet = {
         expand = function(args)
@@ -50,12 +40,12 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert {
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm { select = true },
-        -- Навигация по фрагментам
         ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -75,82 +65,41 @@ return {
           end
         end, { 'i', 's' }),
       },
-      sources = cmp.config.sources {
-        { name = 'nvim_lsp' }, -- LSP источник
-        { name = 'luasnip' }, -- Фрагменты
-        { name = 'buffer' }, -- Текущий буфер
-        { name = 'spell' }, -- Орфография
+      sources = {
+        { name = 'luasnip', priority = 1000 },
+        { name = 'nvim_lsp', priority = 500 },
+        { name = 'path', priority = 300 },
+        { name = 'buffer', priority = 100, keyword_length = 3 },
       },
       formatting = {
         format = function(entry, vim_item)
-          -- Добавляем иконки к различным типам источников
-          local icons = {
-            Text = '󰉿',
-            Method = '󰆧',
-            Function = '󰊕',
-            Constructor = '',
-            Field = '󰜢',
-            Variable = '󰀫',
-            Class = '󰠱',
-            Interface = '',
-            Module = '',
-            Property = '󰜢',
-            Unit = '',
-            Value = '󰎠',
-            Enum = '',
-            Keyword = '󰌋',
-            Snippet = '',
-            Color = '󰏘',
-            File = '󰈙',
-            Reference = '',
-            Folder = '󰉋',
-            EnumMember = '',
-            Constant = '󰏿',
-            Struct = '',
-            Event = '',
-            Operator = '󰆕',
-            TypeParameter = '󰅲',
-          }
-          vim_item.kind = string.format('%s %s', icons[vim_item.kind], vim_item.kind)
+          vim_item.menu = ({
+            luasnip = '[Snippet]',
+            nvim_lsp = '[LSP]',
+            buffer = '[Buffer]',
+            path = '[Path]',
+          })[entry.source.name]
           return vim_item
         end,
       },
-      experimental = {
-        ghost_text = false, -- Показывать призрачный текст
-      },
-      window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-      },
     }
-    -- Конфигурация для командной строки
-    cmp.setup.cmdline('/', {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = {
-        { name = 'buffer' },
-      },
-    })
-    cmp.setup.cmdline(':', {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources {
-        { name = 'cmdline' },
-      },
-    })
-    local lspconfig = require 'lspconfig'
+
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    lspconfig.cssls.setup {
-      capabilities = capabilities,
+    vim.lsp.config.cssls = {
+      cmd = { 'vscode-css-language-server', '--stdio' },
       filetypes = { 'css', 'scss', 'less' },
-      settings = {
-        css = { validate = true },
-        scss = { validate = true },
-        less = { validate = true },
-      },
-    }
-    lspconfig.emmet_ls.setup {
+      root_markers = { 'package.json' },
       capabilities = capabilities,
-      filetypes = { 'html', 'css', 'scss', 'javascriptreact', 'typescriptreact' },
     }
+    vim.lsp.enable 'cssls'
+
+    vim.lsp.config.emmet_ls = {
+      cmd = { 'emmet-ls', '--stdio' },
+      filetypes = { 'html', 'css', 'scss', 'javascriptreact', 'typescriptreact' },
+      root_markers = { 'package.json' },
+      capabilities = capabilities,
+    }
+    vim.lsp.enable 'emmet_ls'
   end,
 }

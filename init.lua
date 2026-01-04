@@ -94,8 +94,8 @@ vim.opt.undofile = true
 
 vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufNewFile' }, {
   callback = function()
-    local undo_dir = vim.fn.stdpath('state') .. '/undo/'
-    local file_path = vim.fn.expand('%:p')
+    local undo_dir = vim.fn.stdpath 'state' .. '/undo/'
+    local file_path = vim.fn.expand '%:p'
     local undo_file = undo_dir .. file_path:gsub('/', '%%')
     if #undo_file > 255 then
       vim.opt_local.undofile = false
@@ -529,7 +529,6 @@ require('lazy').setup {
   require 'kickstart.plugins.telescope',
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.oil',
   require 'kickstart.plugins.keybindings',

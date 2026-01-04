@@ -18,5 +18,6 @@ return {
     vim.api.nvim_set_hl(0, 'LineNr', { fg = '#ffbf00' })
     vim.api.nvim_set_hl(0, 'LineNrBelow', { fg = '#ef6bce' })
     vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', { fg = '#a4a4a4' })
+    vim.api.nvim_set_hl(0, 'NotifyBackground', { bg = '#000000' })
   end,
 }

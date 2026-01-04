@@ -3,8 +3,6 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = { 'hrsh7th/cmp-nvim-lsp' },
     config = function()
-      local lspconfig = require 'lspconfig'
-
       local on_attach = function(_, bufnr)
         local opts = { noremap = true, silent = true, buffer = bufnr }
         vim.keymap.set('n', '<leader>cn', vim.lsp.buf.code_action, vim.tbl_extend('force', opts, { desc = 'LSP Code Actions' }))
@@ -13,8 +11,9 @@ return {
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, vim.tbl_extend('force', opts, { desc = 'Rename Symbol' }))
       end
 
-      lspconfig.eslint.setup {
-        on_attach = on_attach,
+      vim.lsp.config.eslint = {
+        cmd = { 'vscode-eslint-language-server', '--stdio' },
+        root_markers = { '.eslintrc', '.eslintrc.js', '.eslintrc.json', 'eslint.config.js' },
         settings = {
           codeAction = {
             disableRuleComment = { enable = true },
@@ -24,19 +23,31 @@ return {
           format = { enable = true },
         },
       }
+      vim.lsp.enable('eslint')
 
-      lspconfig.ts_ls.setup {
-        on_attach = on_attach,
+      vim.lsp.config.ts_ls = {
+        cmd = { 'typescript-language-server', '--stdio' },
+        root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json' },
       }
+      vim.lsp.enable('ts_ls')
 
-      lspconfig.jsonls.setup {
-        on_attach = on_attach,
+      vim.lsp.config.jsonls = {
+        cmd = { 'vscode-json-language-server', '--stdio' },
+        root_markers = { 'package.json' },
         settings = {
           json = {
             validate = { enable = true },
           },
         },
       }
+      vim.lsp.enable('jsonls')
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          local bufnr = args.buf
+          on_attach(nil, bufnr)
+        end,
+      })
     end,
   },
 }
